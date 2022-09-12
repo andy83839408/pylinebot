@@ -37,12 +37,16 @@ def callback():
 
     return 'OK'
 
+import re
 #訊息傳遞區塊
 ##### 基本上程式編輯都在這個function #####
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = TextSendMessage(text=event.message.text)
-    line_bot_api.reply_message(event.reply_token,message)
+    #message = TextSendMessage(text=event.message.text)
+    if re.match("你是誰",message):
+      line_bot_api.reply_message(event.reply_token,TextSendMessage("才不告訴你勒~~"))
+    else:
+      line_bot_api.reply_message(event.reply_token,TextSendMessage(message))
 
 #主程式
 import os 
