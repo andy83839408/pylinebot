@@ -46,6 +46,8 @@ def handle_message(event):
     message = event.message.text
     if re.match("你是誰",message):
       line_bot_api.reply_message(event.reply_token,TextSendMessage("才不告訴你勒~~"))
+    elif re.match("吃啥",message):
+      line_bot_api.reply_message(event.reply_token,TextSendMessage(foodStraws()))
     else:
       line_bot_api.reply_message(event.reply_token,TextSendMessage(message))
 
@@ -54,3 +56,8 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
+foodList = ["牛排", "三商", "鐵板", "石二鍋", "薩利亞", "米粉湯", "炒飯", "烏龍麵"]
+import random
+def foodStraws():
+    return foodList[random.randint(0, len(foodList) - 1)]
