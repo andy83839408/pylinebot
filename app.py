@@ -52,8 +52,10 @@ def handle_message(event):
       sendString=foodStraws()
     elif "吃啥 reset"==message:
       foodList.clear()
+      sendString("菜單已重置，請先新增後再查詢")
     elif re.match("吃啥\s\+*",message):
       foodList.append(message.split("+")[1].strip())
+      sendString("菜單已新增: "+message.split("+")[1].strip())
     else:
       sendString=message
     
@@ -62,7 +64,7 @@ def handle_message(event):
         TextSendMessage(text=sendString)
     )
 
-foodList = ["牛排", "三商", "鐵板", "石二鍋", "薩利亞", "米粉湯", "炒飯", "烏龍麵"]
+foodList = ["大埔", "石二鍋", "薩利亞", "米粉湯", "炒飯", "烏龍麵"]
 import random
 def foodStraws():
     return foodList[random.randint(0, len(foodList) - 1)]
