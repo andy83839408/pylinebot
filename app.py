@@ -52,7 +52,7 @@ def handle_message(event):
       sendString=foodStraws()
     elif "吃啥 reset"==message:
       foodList.clear()
-    elif re.match("吃啥\s\+*",message)
+    elif re.match("吃啥\s\+*",message):
       foodList.append(message.split("+")[1].strip())
     else:
       sendString=message
