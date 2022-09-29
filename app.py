@@ -45,14 +45,16 @@ def handle_message(event):
     #message = TextSendMessage(text=event.message.text)
     message = event.message.text
     sendString = ""
-    if re.match("你是誰",message):
-      #line_bot_api.reply_message(event.reply_token,TextSendMessage("才不告訴你勒~~"))
+    #re.match("你是誰",message) -->正則表示式
+    if "你是誰"==message:
       sendString="乾你屌事"
-    elif re.match("吃啥",message):
-      #line_bot_api.reply_message(event.reply_token,TextSendMessage(foodStraws()))
+    elif "吃啥"==message:
       sendString=foodStraws()
+    elif "吃啥 reset"==message:
+      foodList.clear()
+    elif re.match("吃啥\s\+*",message)
+      foodList.append(message.split("+")[1].strip())
     else:
-      #line_bot_api.reply_message(event.reply_token,TextSendMessage(message))
       sendString=message
     
     line_bot_api.reply_message(
