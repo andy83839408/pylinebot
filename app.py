@@ -60,13 +60,13 @@ def handle_message(event):
         TextSendMessage(text=sendString)
     )
 
+foodList = ["牛排", "三商", "鐵板", "石二鍋", "薩利亞", "米粉湯", "炒飯", "烏龍麵"]
+import random
+def foodStraws():
+    return foodList[random.randint(0, len(foodList) - 1)]
+
 #主程式
 import os 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
-foodList = ["牛排", "三商", "鐵板", "石二鍋", "薩利亞", "米粉湯", "炒飯", "烏龍麵"]
-import random
-def foodStraws():
-    return foodList[random.randint(0, len(foodList) - 1)]
