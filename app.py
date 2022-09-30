@@ -58,6 +58,12 @@ def handle_message(event):
       sendString="菜單已新增: "+message.split("+")[1].strip()
     elif re.match("...天氣",message):
       sendString=weatherReport(message.split("天氣")[0])
+    elif "我說" in message and "你說" in message:
+      isay=message.split("我說")[1].split("你說")[0]
+      usay=message.split("我說")[1].split("你說")[1]
+      sendString=learnSpeak(isay,usay)
+    elif message in dicAll:
+      sendString=dicAll[message]
     else:
       sendString=message
     
@@ -88,6 +94,13 @@ def weatherReport(loc="桃園市"):
       ci8 = i['weatherElement'][3]['time'][0]['parameter']['parameterName']    # 舒適度
       pop8 = i['weatherElement'][1]['time'][0]['parameter']['parameterName']   # 降雨機率
       return f'{city}未來 8 小時{wx8}，最高溫 {maxt8} 度，最低溫 {mint8} 度，降雨機率 {pop8} %'
+
+dicAll = dict()
+def learnSpeak(key,val):
+    dictmp = dict()
+    dictmp = {key:val}
+    dicAll.update(dictmp)
+    return 'OK!已學'
 
 #主程式
 import os 
