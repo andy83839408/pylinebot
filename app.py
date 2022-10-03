@@ -28,7 +28,8 @@ def callback():
     signature = request.headers['X-Line-Signature']
     # get request body as text
     body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
+    #app.logger.info("Request body: " + body)
+    print("Request body: " + body)
 
     # handle webhook body
     try:
@@ -67,6 +68,8 @@ def handle_message(event):
       sendString=dicAll[message]
     else:
       sendString=""
+      print(event)
+      
     
     if sendString!="":
       line_bot_api.reply_message(
