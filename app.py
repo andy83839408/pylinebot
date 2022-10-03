@@ -67,9 +67,8 @@ def handle_message(event):
     elif message in dicAll:
       sendString=dicAll[message]
     elif "這裡有誰"==message and event.source.type=="group":
-      print(event.source.type)
       print(event.source.groupId)
-      member_ids_res = line_bot_api.get_group_member_ids(event.source.groupId)
+      #member_ids_res = line_bot_api.get_group_member_ids(event.source.groupId)
       #sendString=str(member_ids_res.member_ids)+str(member_ids_res.next)
     else:
       sendString=""
