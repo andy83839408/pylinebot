@@ -66,9 +66,11 @@ def handle_message(event):
       sendString=learnSpeak(isay,usay)
     elif message in dicAll:
       sendString=dicAll[message]
+    elif "這裡有誰"==message and event.source.type=="group":
+      member_ids_res = line_bot_api.get_group_member_ids(event.source.groupId)
+      sendString=member_ids_res.member_ids+member_ids_res.next
     else:
       sendString=""
-      print(event)
       
     
     if sendString!="":
