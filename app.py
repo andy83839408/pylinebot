@@ -66,7 +66,7 @@ def handle_message(event):
     elif message in dicAll:
       sendString=dicAll[message]
     else:
-      #sendString=message
+      sendString=""
     
     if sendString!="":
       line_bot_api.reply_message(
