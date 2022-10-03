@@ -17,7 +17,8 @@ line_bot_api = LineBotApi('DwE27NcztEaf4fIpXJtvGIfVCiWv+77jEYNxxTameVt70Caoo5wQ2
 # 必須放上自己的Channel Secret
 handler = WebhookHandler('59f91d8eb0fe78b17307f5b2f02f62b8')
 
-line_bot_api.push_message('U62f7334ab2243374de92db45eab6e153', TextSendMessage(text='你可以開始了'))
+#推播
+#line_bot_api.push_message('U62f7334ab2243374de92db45eab6e153', TextSendMessage(text='你可以開始了'))
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -48,9 +49,9 @@ def handle_message(event):
     #re.match("你是誰",message) -->正則表示式
     if "你是誰"==message:
       sendString="乾你屌事"
-    elif "吃啥"==message:
+    elif "撿狗吃啥"==message:
       sendString=foodStraws()
-    elif "吃啥 reset"==message:
+    elif "撿狗吃啥 reset"==message:
       foodList.clear()
       sendString="菜單已重置，請先新增後再查詢"
     elif re.match("吃啥\s\+*",message):
@@ -65,7 +66,7 @@ def handle_message(event):
     elif message in dicAll:
       sendString=dicAll[message]
     else:
-      sendString=message
+      #sendString=message
     
     if sendString!="":
       line_bot_api.reply_message(
