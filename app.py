@@ -75,7 +75,7 @@ def handle_message(event):
       #member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)
       #sendString=str(member_ids_res.member_ids)+str(member_ids_res.next)
       print(event.source.group_id)
-      line_bot_api.reply_message(event.source.group_id, TemplateSendMessage(alt_text='ButtonsTemplate',
+      line_bot_api.reply_message(event.reply_token, TemplateSendMessage(alt_text='ButtonsTemplate',
         template=ButtonsTemplate(
           thumbnail_image_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_F7ApoziOFXs9ZpPsvKKkixUFv3Nsab0ppAMoMLfYpg&s',
           title='測試測試',
