@@ -82,17 +82,17 @@ def handle_message(event):
           text='這是按鈕樣板',
           imageSize='comtain',
           actions=[
-            PostbackAction(
-                label='postback',
-                data='發送 postback'
-            ),
+            #PostbackAction(
+                #label='postback',
+                #data='發送 postback'
+            #),
             MessageAction(
-                label='說 hello',
-                text='hello'
+                label='按我',
+                text='我是SB'
             ),
             URIAction(
                 label='URL',
-                uri='https://googel.com.tw'
+                uri='https://developers.line.biz/en/reference/messaging-api/#template-messages'
             )
           ]
         )
