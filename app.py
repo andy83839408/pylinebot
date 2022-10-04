@@ -60,9 +60,9 @@ def handle_message(event):
     elif re.match("菜單\s\+*",message):
       foodList.append(message.split("+")[1].strip())
       sendString="菜單已新增: "+message.split("+")[1].strip()
-    elif re.match("...天氣",message):
+    elif re.match("^.+天氣",message):
       sendString=weatherReport(message.split("天氣")[0])
-    elif re.match("...風浪",message):
+    elif re.match("^.+風浪",message):
       sendString=waveReport(message.split("風浪")[0])
     elif "我說" in message and "你說" in message:
       isay=message.split("我說")[1].split("你說")[0]
@@ -141,7 +141,7 @@ def waveReport(loc='宜蘭'):
       ci8 = i['weatherElement'][2]['time'][0]['parameter']['parameterUnit']    # 風速2
       pop8 = i['weatherElement'][3]['time'][0]['parameter']['parameterName']   # 浪高
       pop9 = i['weatherElement'][4]['time'][0]['parameter']['parameterName']   # 浪型
-      return f'{city} 未來一天 {wx8}，風向: {maxt8} ，風速: {mint8}-{ci8}，浪高: {pop8}-{pop9}'
+      return f'{city} 未來一天 {wx8}，<br>風向: {maxt8} ，/n風速: {mint8}-{ci8}，/r浪高: {pop8}-{pop9}'
       break
 
 
