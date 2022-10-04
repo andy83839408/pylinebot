@@ -50,16 +50,20 @@ def handle_message(event):
     #re.match("你是誰",message) -->正則表示式
     if "你是誰"==message:
       sendString="乾你屌事"
-    elif "撿狗吃啥"==message:
+    elif "撿狗roll"==message:
       sendString=foodStraws()
-    elif "撿狗吃啥 reset"==message:
+    elif "菜單 reset"==message:
       foodList.clear()
       sendString="菜單已重置，請先新增後再查詢"
-    elif re.match("吃啥\s\+*",message):
+    elif "菜單 show"==message:
+      sendString=str(foodList)
+    elif re.match("菜單\s\+*",message):
       foodList.append(message.split("+")[1].strip())
       sendString="菜單已新增: "+message.split("+")[1].strip()
     elif re.match("...天氣",message):
       sendString=weatherReport(message.split("天氣")[0])
+    elif re.match("...風浪",message):
+      sendString=waveReport(message.split("風浪")[0])
     elif "我說" in message and "你說" in message:
       isay=message.split("我說")[1].split("你說")[0]
       usay=message.split("我說")[1].split("你說")[1]
@@ -67,7 +71,7 @@ def handle_message(event):
     elif message in dicAll:
       sendString=dicAll[message]
     elif "這裡有誰"==message and event.source.type=="group":
-      print(event.source.group_id)
+      #要買高級會員才能用，傻眼
       member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)
       sendString=str(member_ids_res.member_ids)+str(member_ids_res.next)
     else:
@@ -80,18 +84,24 @@ def handle_message(event):
         TextSendMessage(text=sendString)
       )
 
-#菜單變數
-foodList = ["大埔", "石二鍋", "薩利亞", "米粉湯", "炒飯", "烏龍麵"]
+#fun菜單變數
+foodList = ["大埔", "石二鍋", "炒飯", "烏龍麵"]
 import random
 def foodStraws():
     return foodList[random.randint(0, len(foodList) - 1)]
 
+#fun天氣預報
 import requests
 def weatherReport(loc="桃園市"):
   url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-FE106A37-DA13-4687-9965-EE2C546A1C30'
   data = requests.get(url)   # 取得 JSON 檔案的內容為文字
   data_json = data.json()    # 轉換成 JSON 格式
   location = data_json['records']['location']
+
+  loc=loc.replace("台","臺")
+  if len(loc)==2:
+    loc=loc+"市"
+
   for i in location:
     if i['locationName']==loc:
       city = i['locationName']    # 縣市名稱
@@ -100,14 +110,40 @@ def weatherReport(loc="桃園市"):
       mint8 = i['weatherElement'][4]['time'][0]['parameter']['parameterName']  # 最低溫
       ci8 = i['weatherElement'][3]['time'][0]['parameter']['parameterName']    # 舒適度
       pop8 = i['weatherElement'][1]['time'][0]['parameter']['parameterName']   # 降雨機率
-      return f'{city}未來 8 小時{wx8}，最高溫 {maxt8} 度，最低溫 {mint8} 度，降雨機率 {pop8} %'
+      return f'{city}未來 8 小時{wx8}，最低溫 {maxt8} 度，最高溫 {mint8} 度，降雨機率 {pop8} %'
 
+#fun學說話
 dicAll = dict()
 def learnSpeak(key,val):
     dictmp = dict()
     dictmp = {key:val}
     dicAll.update(dictmp)
     return 'OK!已學'
+
+#fun風浪
+import ssl,json,urllib.request
+def waveReport(loc='宜蘭'):
+  url = 'https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-A0012-001?Authorization=CWB-FE106A37-DA13-4687-9965-EE2C546A1C30&downloadType=WEB&format=JSON'
+  context = ssl._create_unverified_context()
+
+  with urllib.request.urlopen(url, context=context) as jsondata:
+    #將JSON進行UTF-8的BOM解碼，並把解碼後的資料載入JSON陣列中
+    data = json.loads(jsondata.read().decode('utf-8-sig'))
+
+  location = data['cwbopendata']['dataset']['location']
+
+  for i in location:
+    if loc in i['locationName']:
+      city = i['locationName']    # 縣市名稱
+      wx8 = i['weatherElement'][0]['time'][0]['parameter']['parameterName']    # 天氣現象
+      maxt8 = i['weatherElement'][1]['time'][0]['parameter']['parameterName']  # 風向 
+      mint8 = i['weatherElement'][2]['time'][0]['parameter']['parameterName']  # 風速
+      ci8 = i['weatherElement'][2]['time'][0]['parameter']['parameterUnit']    # 風速2
+      pop8 = i['weatherElement'][3]['time'][0]['parameter']['parameterName']   # 浪高
+      pop9 = i['weatherElement'][4]['time'][0]['parameter']['parameterName']   # 浪型
+      return f'{city} 未來一天 {wx8}，風向: {maxt8} ，風速: {mint8}-{ci8}，浪高: {pop8}-{pop9}'
+      break
+
 
 #主程式
 import os 
