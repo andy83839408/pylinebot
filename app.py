@@ -18,7 +18,7 @@ line_bot_api = LineBotApi('DwE27NcztEaf4fIpXJtvGIfVCiWv+77jEYNxxTameVt70Caoo5wQ2
 handler = WebhookHandler('59f91d8eb0fe78b17307f5b2f02f62b8')
 
 #推播
-#line_bot_api.push_message('U62f7334ab2243374de92db45eab6e153', TextSendMessage(text='你可以開始了'))
+line_bot_api.push_message('U62f7334ab2243374de92db45eab6e153', TextSendMessage(text='你可以開始了'))
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -141,7 +141,7 @@ def waveReport(loc='宜蘭'):
       ci8 = i['weatherElement'][2]['time'][0]['parameter']['parameterUnit']    # 風速2
       pop8 = i['weatherElement'][3]['time'][0]['parameter']['parameterName']   # 浪高
       pop9 = i['weatherElement'][4]['time'][0]['parameter']['parameterName']   # 浪型
-      return f'{city} 未來一天 {wx8}，%0D%0A風向: {maxt8} ，%0D%0A風速: {mint8}-{ci8}，%0D%0A浪高: {pop8}-{pop9}'
+      return f'{city} 未來一天 {wx8}，\n風向: {maxt8} ，\n風速: {mint8}-{ci8}，\n浪高: {pop8}-{pop9}'
       break
 
 
