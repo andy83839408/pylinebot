@@ -70,10 +70,31 @@ def handle_message(event):
       sendString=learnSpeak(isay,usay)
     elif message in dicAll:
       sendString=dicAll[message]
-    elif "這裡有誰"==message and event.source.type=="group":
+    elif "群組"==message and event.source.type=="group":
       #要買高級會員才能用，傻眼
-      member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)
-      sendString=str(member_ids_res.member_ids)+str(member_ids_res.next)
+      #member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)
+      #sendString=str(member_ids_res.member_ids)+str(member_ids_res.next)
+      line_bot_api.push_message(event.source.group_id, TextSendMessage(alt_text='ButtonsTemplate',
+        template=ButtonsTemplate(
+          thumbnail_image_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_F7ApoziOFXs9ZpPsvKKkixUFv3Nsab0ppAMoMLfYpg&s',
+          title='測試測試',
+          text='這是按鈕樣板',
+          actions=[
+            PostbackAction(
+                label='postback',
+                data='發送 postback'
+            ),
+            MessageAction(
+                label='說 hello',
+                text='hello'
+            ),
+            URIAction(
+                label='URL',
+                uri='https://googel.com.tw'
+            )
+          ]
+        )
+      ))
     else:
       sendString=""
       
@@ -85,7 +106,7 @@ def handle_message(event):
       )
 
 #fun菜單變數
-foodList = ["大埔", "石二鍋", "炒飯", "烏龍麵"]
+foodList = ["大埔", "石二鍋", "炒飯"]
 import random
 def foodStraws():
     return foodList[random.randint(0, len(foodList) - 1)]
