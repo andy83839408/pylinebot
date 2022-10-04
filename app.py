@@ -77,9 +77,9 @@ def handle_message(event):
       print(event.source.group_id)
       line_bot_api.reply_message(event.reply_token, TemplateSendMessage(alt_text='ButtonsTemplate',
         template=ButtonsTemplate(
-          thumbnail_image_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_F7ApoziOFXs9ZpPsvKKkixUFv3Nsab0ppAMoMLfYpg&s',
+          thumbnail_image_url='https://steam.oxxostudio.tw/download/python/line-template-message-demo.jpg',
           title='測試測試',
-          text='這是按鈕樣板',
+          text='<font style="color:red;">這是按鈕樣板</font>',
           actions=[
             PostbackAction(
                 label='postback',
