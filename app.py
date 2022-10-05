@@ -71,7 +71,7 @@ def handle_message(event):
     elif message in dicAll:
       sendString=dicAll[message]
     elif "DBS" in message:
-      sendString=DBS(message.split("天氣")[1])
+      sendString=DBS(message.split("DBS")[1])
     elif "群組"==message and event.source.type=="group":
       #要買高級會員才能用，傻眼
       #member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)
