@@ -70,6 +70,8 @@ def handle_message(event):
       sendString=learnSpeak(isay,usay)
     elif message in dicAll:
       sendString=dicAll[message]
+    elif "DBS" in message:
+      sendString=DBS(message.split("天氣")[1])
     elif "群組"==message and event.source.type=="group":
       #要買高級會員才能用，傻眼
       #member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)
@@ -167,6 +169,28 @@ def waveReport(loc='宜蘭'):
       return f'{city} 未來一天 {wx8}，\n風向: {maxt8} ，\n風速: {mint8}-{ci8}，\n浪高: {pop8}-{pop9}'
       break
 
+
+
+#連資料庫撈
+import os,psycopg2
+def DBS(SQLstr):
+  conn = psycopg2.connect(database="d9853ut492vfal",
+						user="unbbvvskdqjxhn",
+						password="a44a2c39177a46456adc7e1a6bb984c59f904c5d80ca2c1d57c569fc898bafd7",
+						host="ec2-3-223-242-224.compute-1.amazonaws.com",
+						port="5432")
+  cursor=conn.cursor()
+  cursor.execute("SELECT * FROM userdata;")#選擇資料表userdata
+  rows = cursor.fetchall() #讀出所有資料
+
+  res=""
+  for row in rows:   #將讀到的資料全部print出來
+    res+="Data row = (%s, %s, %s)\n" %(str(row[0]), str(row[1]), str(row[2]))
+  return res
+    
+cursor.close()
+
+#連資料庫建
 
 #主程式
 import os 
