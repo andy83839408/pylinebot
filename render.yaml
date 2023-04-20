@@ -3,7 +3,7 @@ services:
   name: pylinebot
   env: python
   repo: https://github.com/andy83839408/pylinebot.git
-  buildCommand: #pip install gunicorn -r requirements.txt
+  buildCommand: gunicorn -r requirements.txt
   startCommand: gunicorn app:app
   plan: free
   autoDeploy: false
