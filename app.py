@@ -8,6 +8,7 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 from linebot.models import PostbackAction,URIAction, MessageAction, TemplateSendMessage, ButtonsTemplate,TextSendMessage
+from Postgresql import database
 
 app = Flask(__name__)
 
@@ -71,7 +72,17 @@ def handle_message(event):
     elif message in dicAll:
       sendString=dicAll[message]
     elif "DBS" in message:
-      sendString=DBS(message.split("DBS")[1])
+      profile = line_bot_api.get_profile(event.source.user_id)
+      user_name = profile.display_name #使用者名稱
+      uid = profile.user_id # 發訊者ID
+      key=message.split("@")[1]
+      val=message.split("@")[2]
+      myDatabase = database(user_name, uid)
+      v = myDatabase.add_test(key,val)
+      if v==True:
+        sendString="資料庫新增成功"
+      else:
+        sendString="資料庫新增失敗"
     elif "群組"==message and event.source.type=="group":
       #要買高級會員才能用，傻眼
       #member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)
@@ -171,26 +182,27 @@ def waveReport(loc='宜蘭'):
 
 
 
-#連資料庫撈
-import psycopg2
-def DBS(SQLstr):
-  conn = psycopg2.connect(database="d9853ut492vfal",
-						user="unbbvvskdqjxhn",
-						password="a44a2c39177a46456adc7e1a6bb984c59f904c5d80ca2c1d57c569fc898bafd7",
-						host="ec2-3-223-242-224.compute-1.amazonaws.com",
-						port="5432")
-  cursor=conn.cursor()
-  cursor.execute("SELECT * FROM userdata;")#選擇資料表userdata
-  rows = cursor.fetchall() #讀出所有資料
-  cursor.close()
-  res=""
-  for row in rows:   #將讀到的資料全部print出來
-    res+="Data row = (%s, %s, %s)\n" %(str(row[0]), str(row[1]), str(row[2]))
-  return res
-    
+#連資料庫撈--舊
+# import psycopg2
+# def DBS(SQLstr):
+#   conn = psycopg2.connect(database="d9853ut492vfal",
+# 						user="unbbvvskdqjxhn",
+# 						password="a44a2c39177a46456adc7e1a6bb984c59f904c5d80ca2c1d57c569fc898bafd7",
+# 						host="ec2-3-223-242-224.compute-1.amazonaws.com",
+# 						port="5432")
+#   cursor=conn.cursor()
+#   cursor.execute("SELECT * FROM userdata;")#選擇資料表userdata
+#   rows = cursor.fetchall() #讀出所有資料
+#   cursor.close()
+#   res=""
+#   for row in rows:   #將讀到的資料全部print出來
+#     res+="Data row = (%s, %s, %s)\n" %(str(row[0]), str(row[1]), str(row[2]))
+#   return res
 
 
-#連資料庫建
+#連資料庫撈--render-postgreSQL
+
+
 
 #主程式
 import os 
