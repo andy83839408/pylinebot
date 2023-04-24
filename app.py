@@ -77,8 +77,10 @@ def handle_message(event):
       uid = profile.user_id # 發訊者ID
       key=message.split("@")[1]
       val=message.split("@")[2]
+      print(f"name={user_name},key={key},val={val}")
       myDatabase = database(user_name, uid)
       v = myDatabase.add_test(key,val)
+      print(v)
       if v==True:
         sendString="資料庫新增成功"
       else:
