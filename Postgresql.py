@@ -7,6 +7,7 @@ class database:
     self.user_name = user_name
     self.uid = uid
     self.Internal_Database_URL = os.getenv('Internal_Database_URL')
+    print("資料庫連線字串:"+os.getenv('Internal_Database_URL'))
   def add_test(self,key,val):
     conn = psycopg2.connect(self.Internal_Database_URL)
     cur = conn.cursor()
