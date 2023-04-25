@@ -11,7 +11,7 @@ class database:
   def add_test(self,key,val):
     conn = psycopg2.connect(self.Internal_Database_URL)
     cur = conn.cursor()
-    cur.excute(f"SELECT value,username FROM trishtalk WHERE key='{key}'")
+    cur.execute(f"SELECT value,username FROM trishtalk WHERE key='{key}'")
     rows = cur.cur.fetchall()
     print("資料庫連線進")
     if rows ==[]:
