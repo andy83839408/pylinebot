@@ -19,7 +19,7 @@ class database:
       cur.execute(f"INSERT INTO trishtalk (key,value,userid,username) VALUES('{key}','{val}','{self.uid}','{self.user_name}')")
     else:
       print("資料庫連線進ELSE")
-      cur.execute(f"UPDATE trishtalk set val = {val} where key='{key}'")
+      cur.execute(f"UPDATE trishtalk set val = '{val}' where key='{key}'")
 
     conn.commit()
     cur.close()
