@@ -71,7 +71,7 @@ def handle_message(event):
       sendString=learnSpeak(isay,usay)
     elif message in dicAll:
       sendString=dicAll[message]
-    elif "DBS" in message:
+    elif "DBS" in message:  #DB INSERT/UPDATE
       profile = line_bot_api.get_profile(event.source.user_id)
       user_name = profile.display_name #使用者名稱
       uid = profile.user_id # 發訊者ID
@@ -85,6 +85,15 @@ def handle_message(event):
         sendString="資料庫新增成功"
       else:
         sendString="資料庫新增失敗"
+    elif "DB" in message: #DB SELECT
+      profile = line_bot_api.get_profile(event.source.user_id)
+      user_name = profile.display_name #使用者名稱
+      uid = profile.user_id # 發訊者ID
+      key=message.split("@")[1]
+      myDatabase = database(user_name, uid)
+      res = myDatabase.show(key)
+      if v!="":
+        sendString=res
     elif "群組"==message and event.source.type=="group":
       #要買高級會員才能用，傻眼
       #member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)

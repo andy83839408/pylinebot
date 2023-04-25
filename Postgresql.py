@@ -12,7 +12,7 @@ class database:
     conn = psycopg2.connect(self.Internal_Database_URL)
     cur = conn.cursor()
     cur.execute(f"SELECT value,username FROM trishtalk WHERE key='{key}'")
-    rows = cur.cur.fetchall()
+    rows = cur.fetchall()
     print("資料庫連線進")
     if rows ==[]:
       print("資料庫連線進IF")
@@ -24,3 +24,15 @@ class database:
     conn.commit()
     conn.close()
     return True
+  
+  def show(self,key):
+    conn = psycopg2.connect(self.Internal_Database_URL)
+    cur = conn.cursor()
+    cur.execute(f"SELECT value FROM trishtalk WHERE key='{key}'")
+    rows = cur.fetchall()
+    res=""
+    if rows !=[]:
+      res = f"{rows[0][0]}"
+    conn.commit()
+    conn.close()
+    return res
