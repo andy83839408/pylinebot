@@ -22,6 +22,7 @@ class database:
       cur.execute(f"UPDATE trishtalk set val = {val} where key='{key}'")
 
     conn.commit()
+    cur.close()
     conn.close()
     return True
   
@@ -31,8 +32,9 @@ class database:
     cur.execute(f"SELECT value FROM trishtalk WHERE key='{key}'")
     rows = cur.fetchall()
     res=""
-    if rows !=[]:
+    if rows!=0:
       res = f"{rows[0][0]}"
     conn.commit()
+    cur.close()
     conn.close()
     return res
