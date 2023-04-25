@@ -16,7 +16,7 @@ class database:
     print("資料庫連線進")
     if rows ==[]:
       print("資料庫連線進IF")
-      cur.execute(f"INSERT INTO trishtalk (key,value,userid,username) VALUES('{key},'{val}','{self.uid}','{self.user_name}')")
+      cur.execute(f"INSERT INTO trishtalk (key,value,userid,username) VALUES('{key}','{val}','{self.uid}','{self.user_name}')")
     else:
       print("資料庫連線進ELSE")
       cur.execute(f"UPDATE trishtalk set val = {val} where key='{key}'")
