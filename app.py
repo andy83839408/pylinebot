@@ -92,7 +92,7 @@ def handle_message(event):
       key=message.split("@")[1]
       myDatabase = database(user_name, uid)
       res = myDatabase.show(key)
-      if v!="":
+      if res!="":
         sendString=res
     elif "群組"==message and event.source.type=="group":
       #要買高級會員才能用，傻眼
