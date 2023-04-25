@@ -80,7 +80,7 @@ def handle_message(event):
       print(f"name={user_name},key={key},val={val}")
       myDatabase = database(user_name, uid)
       v = myDatabase.add_test(key,val)
-      print(v)
+      print(f"V={v}")
       if v==True:
         sendString="資料庫新增成功"
       else:
