@@ -21,6 +21,13 @@ handler = WebhookHandler('59f91d8eb0fe78b17307f5b2f02f62b8')
 #推播
 line_bot_api.push_message('U62f7334ab2243374de92db45eab6e153', TextSendMessage(text='你可以開始了'))
 
+#SERVER開啟時抓一份字典FROM DB
+dicAll = dict()
+myDatabase = database("admin", "admin")
+res = myDatabase.getAll()
+dicAll.update(res)
+print("字典已建")
+
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -66,34 +73,14 @@ def handle_message(event):
     elif re.match("^.+風浪",message):
       sendString=waveReport(message.split("風浪")[0])
     elif "我說" in message and "你說" in message:
+      profile = line_bot_api.get_profile(event.source.user_id)
+      user_name = profile.display_name #使用者名稱
+      uid = profile.user_id # 發訊者ID
       isay=message.split("我說")[1].split("你說")[0]
       usay=message.split("我說")[1].split("你說")[1]
-      sendString=learnSpeak(isay,usay)
+      sendString=learnSpeak(isay,usay,user_name,uid)
     elif message in dicAll:
       sendString=dicAll[message]
-    elif "DBS" in message:  #DB INSERT/UPDATE
-      profile = line_bot_api.get_profile(event.source.user_id)
-      user_name = profile.display_name #使用者名稱
-      uid = profile.user_id # 發訊者ID
-      key=message.split("@")[1]
-      val=message.split("@")[2]
-      print(f"name={user_name},key={key},val={val}")
-      myDatabase = database(user_name, uid)
-      v = myDatabase.add_test(key,val)
-      print(f"V={v}")
-      if v==True:
-        sendString="資料庫新增成功"
-      else:
-        sendString="資料庫新增失敗"
-    elif "DB" in message: #DB SELECT
-      profile = line_bot_api.get_profile(event.source.user_id)
-      user_name = profile.display_name #使用者名稱
-      uid = profile.user_id # 發訊者ID
-      key=message.split("@")[1]
-      myDatabase = database(user_name, uid)
-      res = myDatabase.show(key)
-      if res!="":
-        sendString=res
     elif "群組"==message and event.source.type=="group":
       #要買高級會員才能用，傻眼
       #member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)
@@ -159,13 +146,18 @@ def weatherReport(loc="桃園市"):
       pop8 = i['weatherElement'][1]['time'][0]['parameter']['parameterName']   # 降雨機率
       return f'{city}未來 8 小時{wx8}，最低溫 {maxt8} 度，最高溫 {mint8} 度，降雨機率 {pop8} %'
 
-#fun學說話
-dicAll = dict()
-def learnSpeak(key,val):
+#fun學說話  20230426改用DB存
+def learnSpeak(key,val,user_name,uid):
     dictmp = dict()
     dictmp = {key:val}
     dicAll.update(dictmp)
-    return 'OK!已學'
+    myDatabase = database(user_name, uid)
+    v = myDatabase.add_test(key,val)
+    if v==True:
+        print("資料庫新增成功")
+    else:
+        print("資料庫新增失敗")
+    return '..(筆記中'
 
 #fun風浪
 import ssl,json,urllib.request

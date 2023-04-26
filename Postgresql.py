@@ -13,12 +13,11 @@ class database:
     cur = conn.cursor()
     cur.execute(f"SELECT value,username FROM trishtalk WHERE key='{key}'")
     rows = cur.fetchall()
-    print("資料庫連線進")
     if rows ==[]:
-      print("資料庫連線進IF")
+      print("資料庫連線進INSERT")
       cur.execute(f"INSERT INTO trishtalk (key,value,userid,username) VALUES('{key}','{val}','{self.uid}','{self.user_name}')")
     else:
-      print("資料庫連線進ELSE")
+      print("資料庫連線進UPDATE")
       cur.execute(f"UPDATE trishtalk set value = '{val}' where key='{key}'")
 
     conn.commit()
@@ -34,6 +33,20 @@ class database:
     res=""
     if rows!=0:
       res = f"{rows[0][0]}"
+    conn.commit()
+    cur.close()
+    conn.close()
+    return res
+  
+  def getAll(self):
+    conn = psycopg2.connect(self.Internal_Database_URL)
+    cur = conn.cursor()
+    cur.execute(f"SELECT key,value FROM trishtalk")
+    rows = cur.fetchall()
+    res=dict()
+    if rows!=0:
+      for row in rows:
+        res.update({row[0]:row[1]})
     conn.commit()
     cur.close()
     conn.close()
