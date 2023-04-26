@@ -9,6 +9,8 @@ from linebot.exceptions import (
 from linebot.models import *
 from linebot.models import PostbackAction,URIAction, MessageAction, TemplateSendMessage, ButtonsTemplate,TextSendMessage
 from Postgresql import database
+import openai
+from pyChatGPT import ChatGPT
 
 app = Flask(__name__)
 
@@ -81,6 +83,17 @@ def handle_message(event):
       sendString=learnSpeak(isay,usay,user_name,uid)
     elif message in dicAll:
       sendString=dicAll[message]
+    elif "我說" in message:
+      openai.api_key = os.getenv('SESSION_TOKEN')
+      response = openai.Completion.create(
+                engine='text-davinci-003',
+                prompt=message,
+                max_tokens=300,
+                temperature=0.5
+                )
+      completed_text = response['choices'][0]['text']
+      sendString = completed_text[2:]
+
     elif "群組"==message and event.source.type=="group":
       #要買高級會員才能用，傻眼
       #member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)

@@ -1,10 +1,10 @@
 services:
 - type: web
-  name: pylinebot
+  name: line-bot-python-flask
   env: python
   repo: https://github.com/andy83839408/pylinebot.git
   buildCommand: pip install gunicorn -r requirements.txt
-  startCommand: gunicorn app:app
+  startCommand: flask-echo;gunicorn app:app
   plan: free
   autoDeploy: false
   envVars:
@@ -13,6 +13,8 @@ services:
   - key: LINE_CHANNEL_SECRET
     sync: false
   - key: Internal_Database_URL
+    sync: false
+  - key: SESSION_TOKEN
     sync: false
 # - type: web
 #   name: line-bot-python-flask-with-handler
