@@ -87,7 +87,7 @@ def handle_message(event):
     elif "請問" in message:
       openai.api_key = os.getenv('SESSION_TOKEN')
       response = openai.Completion.create(
-                model='tgpt-3.5-turbo',
+                model='gpt-3.5-turbo',
                 prompt=message,
                 max_tokens=500,
                 temperature=0.5
