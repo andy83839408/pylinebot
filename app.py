@@ -10,6 +10,7 @@ from linebot.models import *
 from linebot.models import PostbackAction,URIAction, MessageAction, TemplateSendMessage, ButtonsTemplate,TextSendMessage
 from Postgresql import database
 import openai
+import os
 from pyChatGPT import ChatGPT
 
 app = Flask(__name__)
@@ -85,11 +86,10 @@ def handle_message(event):
       sendString=dicAll[message]
     elif "請問" in message:
       openai.api_key = os.getenv('SESSION_TOKEN')
-      print(f"AIKEY:{openai.api_key}")
       response = openai.Completion.create(
-                engine='text-davinci-003',
+                model='tgpt-3.5-turbo',
                 prompt=message,
-                max_tokens=300,
+                max_tokens=500,
                 temperature=0.5
                 )
       print(f"AI回應:{response}")
