@@ -86,14 +86,24 @@ def handle_message(event):
       sendString=dicAll[message]
     elif "請問" in message:
       openai.api_key = os.getenv('SESSION_TOKEN')
-      response = openai.Completion.create(
+      print(f"AIKEY:{openai.api_key}")
+      #response = openai.Completion.create(
+      #         engine='text-davinci-003',
+      #          prompt=message,
+      #          max_tokens=300,
+      #          temperature=0.5
+      #          )
+      response = openai.ChatCompletion.create(
                 model='gpt-3.5-turbo',
-                prompt=message,
-                max_tokens=500,
+                messages = [
+                  {'role': 'user', 'content': message}
+                ],
+                max_tokens=300,
                 temperature=0.5
                 )
       print(f"AI回應:{response}")
-      completed_text = response['choices'][0]['text']
+      #completed_text = response['choices'][0]['text']
+      completed_text = response['choices'][0]['message']['content']
       sendString = completed_text[2:]
 
     elif "群組"==message and event.source.type=="group":
