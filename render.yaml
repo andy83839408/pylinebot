@@ -1,6 +1,6 @@
 services:
 - type: web
-  name: line-bot-python-flask
+  name: pylinebot
   env: python
   repo: https://github.com/andy83839408/pylinebot.git
   buildCommand: pip install gunicorn -r requirements.txt
