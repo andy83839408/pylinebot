@@ -83,14 +83,16 @@ def handle_message(event):
       sendString=learnSpeak(isay,usay,user_name,uid)
     elif message in dicAll:
       sendString=dicAll[message]
-    elif "我說" in message:
+    elif "請問" in message:
       openai.api_key = os.getenv('SESSION_TOKEN')
+      print(f"AIKEY:{openai.api_key}")
       response = openai.Completion.create(
                 engine='text-davinci-003',
                 prompt=message,
                 max_tokens=300,
                 temperature=0.5
                 )
+      print(f"AI回應:{response}")
       completed_text = response['choices'][0]['text']
       sendString = completed_text[2:]
 
