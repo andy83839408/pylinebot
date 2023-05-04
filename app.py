@@ -68,7 +68,7 @@ def handle_message(event):
       uid = profile.user_id # 發訊者ID
       groupid=event.source.group_id
       sendString=WW_createGroup(groupid,user_name,uid)
-    elif "-new" in message and event.source.type=="group":
+    elif "-++" in message and event.source.type=="group":
       profile = line_bot_api.get_profile(event.source.user_id)
       user_name = profile.display_name #使用者名稱
       uid = profile.user_id # 發訊者ID

@@ -61,7 +61,7 @@ class database:
     cur.execute(f"SELECT * FROM linegroup WHERE groupid='{groupid}'")
     rows = cur.fetchall()
     if rows ==[]:
-      cur.execute(f"INSERT INTO linegroup (groupid,groupname,createdate) VALUES('{groupid}','',GETDATE())")
+      cur.execute(f"INSERT INTO linegroup (groupid,groupname,createdate) VALUES('{groupid}','',NOW())")
       print("攤錢群組建立成功")
       res=True
 
@@ -78,7 +78,7 @@ class database:
     cur.execute(f"SELECT * FROM linegroupMEMBER WHERE groupid='{groupid}' and userid='{userid}'")
     rows = cur.fetchall()
     if rows ==[]:
-      cur.execute(f"INSERT INTO linegroupMEMBER (userid,username,groupid,createdate) VALUES('{userid}','{username}','{groupid}',GETDATE())")
+      cur.execute(f"INSERT INTO linegroupMEMBER (userid,username,groupid,createdate) VALUES('{userid}','{username}','{groupid}',NOW())")
       print("攤錢人員新增成功")
       res=True
 
