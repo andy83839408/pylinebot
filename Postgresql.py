@@ -51,3 +51,38 @@ class database:
     cur.close()
     conn.close()
     return res
+  
+  #分錢的fun從這開始---------------------------------
+  #建群(LINE群組列USER表的api要錢媽的)
+  def w0w0_createGroup(self,groupid):
+    res=False
+    conn = psycopg2.connect(self.Internal_Database_URL)
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM linegroup WHERE groupid='{groupid}'")
+    rows = cur.fetchall()
+    if rows ==[]:
+      cur.execute(f"INSERT INTO linegroup (groupid,groupname,createdate) VALUES('{groupid}','',GETDATE())")
+      print("攤錢群組建立成功")
+      res=True
+
+    conn.commit()
+    cur.close()
+    conn.close()
+    return res
+  
+  #新增攤錢人員
+  def w0w0_createMember(self,groupid,userid,username):
+    res=False
+    conn = psycopg2.connect(self.Internal_Database_URL)
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM linegroupMEMBER WHERE groupid='{groupid}' and userid='{userid}'")
+    rows = cur.fetchall()
+    if rows ==[]:
+      cur.execute(f"INSERT INTO linegroupMEMBER (userid,username,groupid,createdate) VALUES('{userid}','{username}','{groupid}',GETDATE())")
+      print("攤錢人員新增成功")
+      res=True
+
+    conn.commit()
+    cur.close()
+    conn.close()
+    return res

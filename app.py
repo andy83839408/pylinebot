@@ -61,6 +61,21 @@ def handle_message(event):
     #re.match("你是誰",message) -->正則表示式
     if "你是誰"==message:
       sendString="乾你屌事"
+    #-----------攤錢part Start---------- 
+    elif "-newgroup"==message and event.source.type=="group":
+      profile = line_bot_api.get_profile(event.source.user_id)
+      user_name = profile.display_name #使用者名稱
+      uid = profile.user_id # 發訊者ID
+      groupid=event.source.group_id
+      sendString=WW_createGroup(groupid,user_name,uid)
+    elif "-new" in message and event.source.type=="group":
+      profile = line_bot_api.get_profile(event.source.user_id)
+      user_name = profile.display_name #使用者名稱
+      uid = profile.user_id # 發訊者ID
+      groupid=event.source.group_id
+      #username=message.split(" ")  取名fun晚點再做
+      sendString=WW_createMember(groupid,user_name,uid)
+    #-----------攤錢part End---------- 
     elif "撿狗roll"==message:
       sendString=foodStraws()
     elif "菜單 reset"==message:
@@ -104,10 +119,10 @@ def handle_message(event):
       print(f"AI回應:{response}")
       #completed_text = response['choices'][0]['text']
       completed_text = response['choices'][0]['message']['content']
-      sendString = completed_text[2:]
+      sendString = completed_text[0:]
 
     elif "群組"==message and event.source.type=="group":
-      #要買高級會員才能用，傻眼
+      #20220624要買高級會員才能用，傻眼 --https://developers.line.biz/en/reference/messaging-api/#get-group-member-user-ids
       #member_ids_res = line_bot_api.get_group_member_ids(event.source.group_id)
       #sendString=str(member_ids_res.member_ids)+str(member_ids_res.next)
       print(event.source.group_id)
@@ -228,7 +243,23 @@ def waveReport(loc='宜蘭'):
 #   return res
 
 
-#連資料庫撈--render-postgreSQL
+#連資料庫撈 攤錢fun-建群
+def WW_createGroup(groupid,user_name,uid):
+    myDatabase = database(user_name, uid)
+    v = myDatabase.w0w0_createGroup(groupid)
+    if v==True:
+        return '攤錢群組建立成功'
+    else:
+        return '群組建立失敗'
+    
+#連資料庫撈 攤錢fun-建人
+def WW_createMember(groupid,user_name,uid):
+    myDatabase = database(user_name, uid)
+    v = myDatabase.w0w0_createMember(groupid,uid,user_name)
+    if v==True:
+        return f'{user_name} 人員新增成功'
+    else:
+        return '人員新增失敗'
 
 
 
